@@ -18,7 +18,7 @@ function Register(props) {
     props.reg(email, pass);
     setEmail("");
     setPass("");
-  }git
+  }
 
   return (
     <div className="auth">

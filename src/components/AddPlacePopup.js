@@ -30,6 +30,7 @@ function AddPlacePopup(props) {
       onClose={props.onClose}
       title="Новое место"
       onSubmit={handleSubmit}
+      name = {'add_card'}
     >
       {
         <>

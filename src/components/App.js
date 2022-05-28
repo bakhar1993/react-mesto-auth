@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, useHistory } from "react-router-dom";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -78,7 +78,6 @@ function App() {
         localStorage.setItem("token", res.token);
         setLoggedIn(true);
         setEmail(email);
-        uploadDate();
         history.push("/");
       })
       .catch((error) => console.log(error));
@@ -109,6 +108,10 @@ function App() {
   React.useEffect(() => {
     checkToken();
   }, []);
+
+  useEffect(() => {
+    loggedIn && uploadDate();
+  }, [loggedIn]);
 
   //Загрузка данных юзера и карточек
   function uploadDate() {

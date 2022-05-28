@@ -14,7 +14,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
-import { getContent, authorize, register } from "../Auth";
+import { getContent, authorize, register } from "../utils/Auth";
 import resOk from "../images/reg-ok.svg";
 import resErr from "../images/reg-err.svg";
 
@@ -56,47 +56,62 @@ function App() {
   function checkToken() {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
-      getContent(token).then((res) => {
-        setEmail(res.data.email);
-        setLoggedIn(true);
-        history.push("/");
-      });
+      getContent(token)
+        .then((res) => {
+          setEmail(res.data.email);
+          setLoggedIn(true);
+          history.push("/");
+        })
+        .catch((error) => console.log(error));
     }
   }
   function outProfile() {
     localStorage.removeItem("token");
+    setLoggedIn(false);
     setEmail("");
+    history.push("/sign-in");
   }
 
   function auth(email, pass) {
-    authorize(email, pass).then((res) => {
-      localStorage.setItem("token", res.token);
-      setLoggedIn(true);
-      setEmail(email);
-      history.push("/");
-    });
+    authorize(email, pass)
+      .then((res) => {
+        localStorage.setItem("token", res.token);
+        setLoggedIn(true);
+        setEmail(email);
+        uploadDate();
+        history.push("/");
+      })
+      .catch((error) => console.log(error));
   }
 
+  // Регистрация
   function reg(email, pass) {
-    register(email, pass).then((res) => {
-      if (res.ok) {
-        setInfoMessage({
-          image: resErr,
-          title: "Что-то пошло не так! Попробуйте ещё раз.",
-        });
-        setIsInfoTooltipOpen(true);
-        history.push("/sign-in");
-      } else {
-        setIsInfoTooltipOpen(true);
-      }
-    });
+    register(email, pass)
+      .then((res) => {
+        if (!res.ok) {
+          setInfoMessage({
+            image: resErr,
+            title: "Что-то пошло не так! Попробуйте ещё раз.",
+          });
+          setIsInfoTooltipOpen(true);
+        } else {
+          setInfoMessage({
+            image: resOk,
+            title: "Вы успешно зарегистрировались!",
+          });
+          setIsInfoTooltipOpen(true);
+          history.push("/sign-in");
+        }
+      })
+      .catch((error) => console.log(error));
   }
 
   React.useEffect(() => {
     checkToken();
   }, []);
 
-  React.useEffect(() => {
+  //Загрузка данных юзера и карточек
+  function uploadDate() {
     api
       .getUserInfo()
       .then((res) => {
@@ -109,7 +124,7 @@ function App() {
         setCards(res);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Register(props) {
@@ -16,9 +16,12 @@ function Register(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
     props.reg(email, pass);
+  }
+
+  useEffect(()=>{
     setEmail("");
     setPass("");
-  }
+  },[])
 
   return (
     <div className="auth">

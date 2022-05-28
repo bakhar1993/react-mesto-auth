@@ -12,7 +12,7 @@ function EditAvatarPopup(props) {
   }
 
   React.useEffect(() => {
-    avatarRef.current.value = '';
+    avatarRef.current.value = "";
   }, [props.isOpen]);
 
   return (
@@ -21,7 +21,7 @@ function EditAvatarPopup(props) {
       onClose={props.onClose}
       title={"Обновить аватар"}
       onSubmit={handleSubmit}
-      name = {'edit_avatar'}
+      name={"edit_avatar"}
     >
       {
         <>
@@ -31,6 +31,7 @@ function EditAvatarPopup(props) {
             type="url"
             name="avatar"
             className="popup__input popup__input_type-avatar-edit"
+            placeholder="Ссылка на изображение"
             required
           />
           <span className="avatar-input-error popup__input-error"></span>

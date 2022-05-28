@@ -10,14 +10,10 @@ function Header(props) {
         <div className="header__info">
           {" "}
           <p className="header__email">{props.email}</p>{" "}
-          <Link
-            className="header__link"
-            to="/sign-in"
-            onClick={props.outProfile}
-          >
+          <button className="header__link" onClick={props.outProfile}>
             {" "}
             Выйти{" "}
-          </Link>
+          </button>
         </div>
       ) : (
         <>

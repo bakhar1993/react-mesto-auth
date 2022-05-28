@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -14,9 +14,12 @@ function Login(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
     props.auth(email, pass);
+  }
+
+  useEffect(()=>{
     setEmail("");
     setPass("");
-  }
+  },[])
 
   return (
     <div className="auth">
